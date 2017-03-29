@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace hackathon.Models
 {
-    public partial class MercuryEntities : DbContext
+    public partial class MercuryContext : DbContext
     {
 
         #region DbSets

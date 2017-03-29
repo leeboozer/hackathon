@@ -11,8 +11,7 @@ namespace hackathon.Controllers
     {
         public IActionResult Index()
         {
-            //var db = new MercuryEntities();
-            //var volunteerPoolCalcs = db.VolunteerPoolCalc.OrderBy(x => x.LastName).ThenBy(x => x.FirstName).ToList();
+            //var volunteerPoolCalcs = Mercury.db.VolunteerPoolCalc.OrderBy(x => x.LastName).ThenBy(x => x.FirstName).ToList();
             return View();
         }
 
