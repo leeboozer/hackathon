@@ -1,0 +1,89 @@
+﻿<Project ToolsVersion="15.0" Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup Label="Configuration" Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputType>exe</OutputType>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <IsPackable>false</IsPackable>
+    <ApplicationIcon />
+    <OutputTypeEx>exe</OutputTypeEx>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="1.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="1.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer.Design" Version="1.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="1.1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Files not to show in IDE -->
+    <None Remove="yarn.lock" />
+    <Compile Remove="Core\Authorization\**" />
+    <Compile Remove="Core\Controllers\**" />
+    <Compile Remove="Core\Factory\**" />
+    <Compile Remove="Core\Interfaces\**" />
+    <Compile Remove="Core\Logging\**" />
+    <Compile Remove="Core\Migrations\**" />
+    <Compile Remove="Core\Remote\**" />
+    <Compile Remove="Core\Views\**" />
+    <Compile Remove="Core\Windsor\**" />
+
+    <!-- Files not to publish (note that the 'dist' subfolders are re-added below) -->
+    <Content Remove="ClientApp\**" />
+    <Content Remove="Core\Authorization\**" />
+    <Content Remove="Core\Controllers\**" />
+    <Content Remove="Core\Factory\**" />
+    <Content Remove="Core\Interfaces\**" />
+    <Content Remove="Core\Logging\**" />
+    <Content Remove="Core\Migrations\**" />
+    <Content Remove="Core\Remote\**" />
+    <Content Remove="Core\Views\**" />
+    <Content Remove="Core\Windsor\**" />
+    <EmbeddedResource Remove="Core\Authorization\**" />
+    <EmbeddedResource Remove="Core\Controllers\**" />
+    <EmbeddedResource Remove="Core\Factory\**" />
+    <EmbeddedResource Remove="Core\Interfaces\**" />
+    <EmbeddedResource Remove="Core\Logging\**" />
+    <EmbeddedResource Remove="Core\Migrations\**" />
+    <EmbeddedResource Remove="Core\Remote\**" />
+    <EmbeddedResource Remove="Core\Views\**" />
+    <EmbeddedResource Remove="Core\Windsor\**" />
+    <None Remove="Core\Authorization\**" />
+    <None Remove="Core\Controllers\**" />
+    <None Remove="Core\Factory\**" />
+    <None Remove="Core\Interfaces\**" />
+    <None Remove="Core\Logging\**" />
+    <None Remove="Core\Migrations\**" />
+    <None Remove="Core\Remote\**" />
+    <None Remove="Core\Views\**" />
+    <None Remove="Core\Windsor\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Core\InvitationProducer.cs" />
+    <Compile Remove="Core\ProductAuditAdoRepository.cs" />
+    <Compile Remove="Core\PublicEnumerations.cs" />
+    <Compile Remove="Core\Validation.cs" />
+    <Compile Remove="Core\VolunteerPoolHistoryStatusType.cs" />
+    <Compile Remove="Core\WebResponseException.cs" />
+  </ItemGroup>
+  <Target Name="RunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec Command="npm install" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --config webpack.config.vendor.js --env.prod" />
+    <Exec Command="node node_modules/webpack/bin/webpack.js --env.prod" />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="wwwroot\dist\**; ClientApp\dist\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+</Project>
